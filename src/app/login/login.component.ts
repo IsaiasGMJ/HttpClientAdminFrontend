@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +14,21 @@ import { FooterComponent } from '../footer/footer.component';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  loginForm: FormGroup;
 
-  constructor(private router: Router) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
 
-  onLogin(): void {
-    // Aquí puedes poner tu lógica de autenticación. Por ahora, solo redirigimos.
-    this.router.navigate(['/cursos']);
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(
+        success => this.router.navigate(['/cursos']),
+        error => alert('Datos incorrectos')
+      );
+    }
   }
 }

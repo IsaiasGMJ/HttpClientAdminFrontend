@@ -1,112 +1,64 @@
 <app-navbar></app-navbar>
+
+<!-- Tabla de usuarios -->
 <table class="table align-middle mb-0 bg-white">
-    <thead class="bg-light">
-      <tr>
-        <th>Name</th>
-        <th>Title</th>
-        <th>Status</th>
-        <th>Position</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <div class="d-flex align-items-center">
-            <img
-                src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                alt=""
-                style="width: 45px; height: 45px"
-                class="rounded-circle"
-                />
-            <div class="ms-3">
-              <p class="fw-bold mb-1">John Doe</p>
-              <p class="text-muted mb-0">john.doegmail.com</p>
-            </div>
+  <thead class="bg-light">
+    <tr>
+      <th>Datos basicos</th>
+      <th>Rol</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>
+        <div class="d-flex align-items-center">
+          <img [src]="user.avatar || 'https://via.placeholder.com/45'" alt="" style="width: 45px; height: 45px" class="rounded-circle" />
+          <div class="ms-3">
+            <p class="fw-bold mb-1">{{ user.username }}</p>
+            <p class="text-muted mb-0">{{ user.email }}</p>
           </div>
-        </td>
-        <td>
-          <p class="fw-normal mb-1">Software engineer</p>
-          <p class="text-muted mb-0">IT department</p>
-        </td>
-        <td>
-          <span class="badge badge-success rounded-pill d-inline">Active</span>
-        </td>
-        <td>Senior</td>
-        <td>
-          <button type="button" class="btn btn-link btn-sm btn-rounded">
-            Edit
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="d-flex align-items-center">
-            <img
-                src="https://mdbootstrap.com/img/new/avatars/6.jpg"
-                class="rounded-circle"
-                alt=""
-                style="width: 45px; height: 45px"
-                />
-            <div class="ms-3">
-              <p class="fw-bold mb-1">Alex Ray</p>
-              <p class="text-muted mb-0">alex.raygmail.com</p>
-            </div>
-          </div>
-        </td>
-        <td>
-          <p class="fw-normal mb-1">Consultant</p>
-          <p class="text-muted mb-0">Finance</p>
-        </td>
-        <td>
-          <span class="badge badge-primary rounded-pill d-inline"
-                >Onboarding</span
-            >
-        </td>
-        <td>Junior</td>
-        <td>
-          <button
-                  type="button"
-                  class="btn btn-link btn-rounded btn-sm fw-bold"
-                  data-mdb-ripple-color="dark"
-                  >
-            Edit
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="d-flex align-items-center">
-            <img
-                src="https://mdbootstrap.com/img/new/avatars/7.jpg"
-                class="rounded-circle"
-                alt=""
-                style="width: 45px; height: 45px"
-                />
-            <div class="ms-3">
-              <p class="fw-bold mb-1">Kate Hunington</p>
-              <p class="text-muted mb-0">kate.huningtongmail.com</p>
-            </div>
-          </div>
-        </td>
-        <td>
-          <p class="fw-normal mb-1">Designer</p>
-          <p class="text-muted mb-0">UI/UX</p>
-        </td>
-        <td>
-          <span class="badge badge-warning rounded-pill d-inline">Awaiting</span>
-        </td>
-        <td>Senior</td>
-        <td>
-          <button
-                  type="button"
-                  class="btn btn-link btn-rounded btn-sm fw-bold"
-                  data-mdb-ripple-color="dark"
-                  >
-            Edit
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <app-footer></app-footer>
+        </div>
+      </td>
+      <td>{{ user.role }}</td>
+      <td>
+        <button type="button" class="btn-primary" (click)="editUser(user)">
+          Editar
+        </button>
+        <button type="button" class="btn-primary" (click)="deleteUser(user._id)">
+          Eliminar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Formulario de usuario -->
+<div class="container mt-4">
+  <h2>{{ editingUser ? 'Editar Usuario' : 'Crear Usuario' }}</h2>
+  <form (ngSubmit)="onSubmit()" [formGroup]="userForm">
+    <div class="mb-3">
+      <label for="userName" class="form-label">Nombre de Usuario</label>
+      <input type="text" class="form-control" id="userName" formControlName="username" placeholder="Ingrese el nombre de usuario">
+    </div>
+    <div class="mb-3">
+      <label for="userEmail" class="form-label">Correo Electrónico</label>
+      <input type="email" class="form-control" id="userEmail" formControlName="email" placeholder="Ingrese el correo electrónico">
+    </div>
+    <div class="mb-3">
+      <label for="userPassword" class="form-label">Contraseña</label>
+      <input type="password" class="form-control" id="userPassword" formControlName="password" placeholder="Ingrese la contraseña" [attr.disabled]="editingUser ? true : null">
+    </div>
+    <div class="mb-3">
+      <label for="userRole" class="form-label">Rol del Usuario</label>
+      <select class="form-select" id="userRole" formControlName="role">
+        <option value="admin">Admin</option>
+        <option value="user">Usuario</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">{{ editingUser ? 'Actualizar Usuario' : 'Crear Usuario' }}</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="resetForm()">Cancelar</button>
+  </form>
+</div>
+
+<app-footer></app-footer>

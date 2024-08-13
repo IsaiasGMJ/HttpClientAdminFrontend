@@ -2,156 +2,57 @@
 
 <!-- Carousel wrapper -->
 <div id="carouselDarkVariant" class="carousel slide carousel-fade carousel-dark" data-mdb-ride="carousel" data-mdb-carousel-init>
-    <!-- Indicators -->
-    <div class="carousel-indicators">
-      <button
-        data-mdb-target="#carouselDarkVariant"
-        data-mdb-slide-to="0"
-        class="active"
-        aria-current="true"
-        aria-label="Slide 1"
-      ></button>
-      <button
-        data-mdb-target="#carouselDarkVariant"
-        data-mdb-slide-to="1"
-        aria-label="Slide 1"
-      ></button>
-      <button
-        data-mdb-target="#carouselDarkVariant"
-        data-mdb-slide-to="2"
-        aria-label="Slide 1"
-      ></button>
-    </div>
-  
-    <!-- Inner -->
-    <div class="carousel-inner">
-      <!-- Single item -->
-      <div class="carousel-item active">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(19).webp" class="d-block w-100" alt="Motorbike Smoke"/>
-        <div class="carousel-caption d-none d-md-block">
-          <h5>Curso 1</h5>
-          <p>Curso de conduccion</p>
-        </div>
-      </div>
-  
-      <!-- Single item -->
-      <div class="carousel-item">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(35).webp" class="d-block w-100" alt="Mountaintop"/>
-        <div class="carousel-caption d-none d-md-block">
-          <h5>Curso 2</h5>
-          <p>Curso de proteccion vehicular</p>
-        </div>
-      </div>
-  
-      <!-- Single item -->
-      <div class="carousel-item">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(40).webp" class="d-block w-100" alt="Woman Reading a Book"/>
-        <div class="carousel-caption d-none d-md-block">
-          <h5>Curso 3</h5>
-          <p>Curso de mantenimiento</p>
-        </div>
+  <div class="carousel-inner">
+    <div *ngFor="let curso of cursos; let i = index" [class.active]="i === 0" class="carousel-item">
+      <img [src]="curso.image" class="d-block w-100" [alt]="curso.name" />
+      <div class="carousel-caption d-none d-md-block">
+        <h5>{{ curso.name }}</h5>
+        <p>{{ curso.description }}</p>
       </div>
     </div>
-    <!-- Inner -->
-  
-    <!-- Controls -->
-    <button class="carousel-control-prev" type="button" data-mdb-target="#carouselDarkVariant" data-mdb-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-mdb-target="#carouselDarkVariant" data-mdb-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
-  <!-- TARJETAS DE LOS CURSOS -->
+  <button class="carousel-control-prev" type="button" data-mdb-target="#carouselDarkVariant" data-mdb-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-mdb-target="#carouselDarkVariant" data-mdb-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 
-  <!--CURSOS-->
-  <div class="grid-container">
-    <div class="card">
-      <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-        <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid"/>
-        <a href="#!">
-          <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-        </a>
+<!-- Grid de tarjetas -->
+<div class="grid-container">
+  <div *ngFor="let curso of cursos" class="card">
+    <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
+      <img [src]="curso.image" class="img-fluid" />
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ curso.name }}</h5>
+      <p class="card-text">{{ curso.description }}</p>
+      <a (click)="openModal()" class="btn btn-primary" >Inscribirse</a>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="confirmSubscriptionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmar Inscripción</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="card-body">
-        <h5 class="card-title">Curso 1</h5>
-        <p class="card-text">Curso 1 aqui va ir la descripcion Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui veniam, corrupti eos, eum quae magni animi ratione reiciendis ut laboriosam ipsa nihil cum, incidunt reprehenderit quia ipsam similique nulla porro!</p>
-        <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Inscribirse</a>
+      <div class="modal-body">
+        <p>¿Estás seguro de que deseas inscribirte en este curso?</p>
+        <p><strong>Requisitos:</strong> Tener conocimientos básicos en el área y cumplir con las normas del curso.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="redirectToLibrary()" data-mdb-dismiss="modal">Confirmar y continuar</button>
       </div>
     </div>
-    <!-- Puedes agregar más tarjetas dentro del contenedor grid -->
-    <div class="card">
-        <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-          <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid"/>
-          <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-          </a>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Curso 1</h5>
-          <p class="card-text">Curso 1 aqui va ir la descripcion Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui veniam, corrupti eos, eum quae magni animi ratione reiciendis ut laboriosam ipsa nihil cum, incidunt reprehenderit quia ipsam similique nulla porro!</p>
-          <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Inscribirse</a>
-        </div>
-      </div>
-      <!--Curso 3-->
-      <div class="card">
-        <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-          <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid"/>
-          <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-          </a>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Curso 1</h5>
-          <p class="card-text">Curso 1 aqui va ir la descripcion Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui veniam, corrupti eos, eum quae magni animi ratione reiciendis ut laboriosam ipsa nihil cum, incidunt reprehenderit quia ipsam similique nulla porro!</p>
-          <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Inscribirse</a>
-        </div>
-      </div>
-      <!--Curso 4-->
-      <div class="card">
-        <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-          <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid"/>
-          <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-          </a>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Curso 1</h5>
-          <p class="card-text">Curso 1 aqui va ir la descripcion Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui veniam, corrupti eos, eum quae magni animi ratione reiciendis ut laboriosam ipsa nihil cum, incidunt reprehenderit quia ipsam similique nulla porro!</p>
-          <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Inscribirse</a>
-        </div>
-      </div>
-      <!-- curso 5 -->
-      <div class="card">
-        <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-          <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid"/>
-          <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-          </a>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Curso 1</h5>
-          <p class="card-text">Curso 1 aqui va ir la descripcion Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui veniam, corrupti eos, eum quae magni animi ratione reiciendis ut laboriosam ipsa nihil cum, incidunt reprehenderit quia ipsam similique nulla porro!</p>
-          <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Inscribirse</a>
-        </div>
-      </div>
-      <!-- curso 6 -->
-             <div class="card">
-        <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-          <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid"/>
-          <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-          </a>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Curso 1</h5>
-          <p class="card-text">Curso 1 aqui va ir la descripcion Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui veniam, corrupti eos, eum quae magni animi ratione reiciendis ut laboriosam ipsa nihil cum, incidunt reprehenderit quia ipsam similique nulla porro!</p>
-          <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Inscribirse</a>
-        </div>
-      </div>
   </div>
-  
+</div>
+
 
 <app-footer></app-footer>

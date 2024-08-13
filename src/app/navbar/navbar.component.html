@@ -51,35 +51,9 @@
       <!-- Right elements -->
       <div class="d-flex align-items-center">
         <!-- Avatar -->
-        <div class="dropdown">
-          <a
-            data-mdb-dropdown-init
-            class="dropdown-toggle d-flex align-items-center hidden-arrow"
-            [routerLink]="['/a']"
-            id="navbarDropdownMenuAvatar"
-            role="button"
-            aria-expanded="false"
-          >
-            <img
-              src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-              class="rounded-circle"
-              height="25"
-              alt="Black and White Portrait of a Man"
-              loading="lazy"
-            />
-          </a>
-          <ul
-            class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="navbarDropdownMenuAvatar"
-          >
-            <li>
-              <a class="dropdown-item" [routerLink]="['/Configuracion']">Configuracion</a>
-            </li>
-            <li>
-              <a class="dropdown-item" [routerLink]="['/logout']">Cerrar sesion</a>
-            </li>
-          </ul>
-        </div>
+        <button type="button" class="btn-primary" (click)="logout()">
+          Cerrar sesion
+        </button>
       </div>
       <!-- Right elements -->
     </div>

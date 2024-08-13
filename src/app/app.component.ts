@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CursosComponent } from "./cursos/cursos.component";
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { AuthInterceptor } from './auth.Interceptor';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +15,14 @@ import { FooterComponent } from './footer/footer.component';
     LoginComponent, HttpClientModule,
      CursosComponent,NavbarComponent,
      FooterComponent],
+     providers: [
+      { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+
+export class AppComponent{
   title = 'HttpClientAdmin';
+
 }

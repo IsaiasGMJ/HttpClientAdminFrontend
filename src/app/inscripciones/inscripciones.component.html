@@ -1,3 +1,48 @@
 <app-navbar></app-navbar>
-<p>inscripciones works!</p>
+<div class="container mt-5">
+    <h2>Usuarios Inscritos a Cursos</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID usuario</th>
+                <th>Nombre Usuario</th>
+                <th>Curso</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let enrollment of enrollments$ | async">
+                <td>{{ enrollment.userId }}</td>
+                <td>{{ enrollment.userName }}</td>
+                <td>{{ enrollment.courseName }}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" (click)="deleteEnrollment(enrollment._id)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container mt-5">
+    <h2>Inscribir Usuario a Curso</h2>
+    <form (submit)="enrollUser()">
+        <div class="mb-3">
+            <label for="userId" class="form-label">Usuario</label>
+            <select class="form-select" id="userId" [(ngModel)]="selectedUser" name="userId" required>
+                <option selected disabled value="">Selecciona un usuario</option>
+                <option *ngFor="let user of users" [value]="user._id">{{ user.name }}</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="courseId" class="form-label">Curso</label>
+            <select class="form-select" id="courseId" [(ngModel)]="selectedCourse" name="courseId" required>
+                <option selected disabled value="">Selecciona un curso</option>
+                <option *ngFor="let course of courses" [value]="course._id">{{ course.name }}</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Inscribir</button>
+    </form>
+</div>
+
+<br><br>
 <app-footer></app-footer>

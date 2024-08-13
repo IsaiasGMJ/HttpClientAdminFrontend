@@ -1,3 +1,86 @@
 <app-navbar></app-navbar>
-<p>crear-cursos works!</p>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header text-center">
+          <h4>Crear Nuevo Curso</h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" [formGroup]="courseForm">
+            <div class="mb-3">
+              <label for="courseName" class="form-label">Nombre del Curso</label>
+              <input type="text" class="form-control" id="courseName" formControlName="name" placeholder="Nombre del curso">
+              <div *ngIf="courseForm.controls['name'].invalid && courseForm.controls['name'].touched" class="text-danger">
+                El nombre del curso es requerido y debe tener al menos 3 caracteres.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="courseDescription" class="form-label">Descripción</label>
+              <textarea class="form-control" id="courseDescription" formControlName="description" rows="3" placeholder="Descripción del curso"></textarea>
+              <div *ngIf="courseForm.controls['description'].invalid && courseForm.controls['description'].touched" class="text-danger">
+                La descripción es requerida y debe tener al menos 10 caracteres.
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="coursePrice" class="form-label">Precio</label>
+                  <input type="number" class="form-control" id="coursePrice" formControlName="price" placeholder="Precio del curso">
+                  <div *ngIf="courseForm.controls['price'].invalid && courseForm.controls['price'].touched" class="text-danger">
+                    El precio es requerido y debe ser un valor positivo.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="courseTeacher" class="form-label">ID del Profesor</label>
+                  <input type="text" class="form-control" id="courseTeacher" formControlName="teacher_id" placeholder="ID del profesor">
+                  <div *ngIf="courseForm.controls['teacher_id'].invalid && courseForm.controls['teacher_id'].touched" class="text-danger">
+                    El ID del profesor es requerido.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="courseImage" class="form-label">Imagen del Curso</label>
+              <input type="file" class="form-control" id="courseImage" (change)="onFileChange($event)">
+              <div *ngIf="courseForm.controls['image'].invalid && courseForm.controls['image'].touched" class="text-danger">
+                La imagen es requerida.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="courseStatus" class="form-label">Estado</label>
+              <select class="form-select" id="courseStatus" formControlName="status">
+                <option value="Active">Activo</option>
+                <option value="Inactive">Inactivo</option>
+              </select>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid">Crear Curso</button>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid">
+                {{ isEditing ? 'Actualizar Curso' : 'Crear Curso' }}
+              </button>
+            </div>
+            
+            <!-- Botón para eliminar el curso (visible solo en modo edición) -->
+            <div class="d-grid mt-3" *ngIf="isEditing">
+              <button type="button" class="btn btn-danger" (click)="onDelete()">Eliminar Curso</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <app-footer></app-footer>

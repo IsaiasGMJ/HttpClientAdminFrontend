@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
-  private apiUrl = 'http://localhost:3000/api'; // URL de tu API en Express
+  private apiUrl = 'http://localhost:3000/'; // URL de tu API en Express
 
   constructor(private http: HttpClient) { }
 
@@ -19,5 +19,12 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/enrollments`, { courseId });
   }
 
-  // Otros métodos según las rutas de tu API
+  addCourse(courseData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/courses`, courseData);
+  }
+
+  // Usuarios
+  getUsers(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/users`);
+  }
 }
