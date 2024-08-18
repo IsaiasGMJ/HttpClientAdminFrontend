@@ -1,27 +1,7 @@
 <app-navbar></app-navbar>
 
-<!-- Carousel wrapper -->
-<div id="carouselDarkVariant" class="carousel slide carousel-fade carousel-dark" data-mdb-ride="carousel" data-mdb-carousel-init>
-  <div class="carousel-inner">
-    <div *ngFor="let curso of cursos; let i = index" [class.active]="i === 0" class="carousel-item">
-      <img [src]="curso.image" class="d-block w-100" [alt]="curso.name" />
-      <div class="carousel-caption d-none d-md-block">
-        <h5>{{ curso.name }}</h5>
-        <p>{{ curso.description }}</p>
-      </div>
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-mdb-target="#carouselDarkVariant" data-mdb-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-mdb-target="#carouselDarkVariant" data-mdb-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-
-<!-- Grid de tarjetas -->
+<!-- Listado de Cursos -->
+<!-- Listado de Cursos -->
 <div class="grid-container">
   <div *ngFor="let curso of cursos" class="card">
     <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
@@ -30,10 +10,11 @@
     <div class="card-body">
       <h5 class="card-title">{{ curso.name }}</h5>
       <p class="card-text">{{ curso.description }}</p>
-      <a (click)="openModal()" class="btn btn-primary" >Inscribirse</a>
+      <a (click)="openModal(curso._id)" class="btn btn-primary">Inscribirse</a>
     </div>
   </div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="confirmSubscriptionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -48,11 +29,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="redirectToLibrary()" data-mdb-dismiss="modal">Confirmar y continuar</button>
+        <!-- Mueve el botón fuera del *ngFor -->
+        <button type="button" class="btn btn-primary" (click)="confirmEnrollment()" data-mdb-dismiss="modal">
+          Confirmar y continuar
+        </button>
       </div>
     </div>
   </div>
 </div>
-
 
 <app-footer></app-footer>

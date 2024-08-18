@@ -12,12 +12,12 @@
     </thead>
     <tbody>
       <tr *ngFor="let course of userCourses">
-        <td>{{ course.courseId.name }}</td>
-        <td>{{ course.courseId.description }}</td>
+        <td>{{ course.course_id?.name || 'Curso no disponible' }}</td>
+        <td>{{ course.course_id?.description || 'Descripción no disponible' }}</td>
         <td>
           <button class="btn btn-danger" (click)="deleteCourse(course._id)">Eliminar inscripción</button>
         </td>
-      </tr>
+      </tr>      
     </tbody>
   </table>
 </div>

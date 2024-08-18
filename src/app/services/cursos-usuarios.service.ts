@@ -1,43 +1,47 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { jwtDecode } from 'jwt-decode';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CursosUsuariosService {
   private apiUrl = 'http://localhost:3000/user-courses';
-  private userId: string | null = null;
-  
-  constructor(private http: HttpClient) {
-    this.userId = this.getUserIdFromToken();
-  }
 
-  // Método para obtener el ID del usuario desde el token JWT
-  private getUserIdFromToken(): string | null {
-    
-    const token = localStorage.getItem('token'); // Asumiendo que el token se guarda en localStorage
-    if (token) {
-      const decodedToken: any = jwtDecode(token);
-      return decodedToken?.userId || null; // Aquí debes ajustar 'userId' al nombre del campo en tu token
+  constructor(private http: HttpClient) { }
+
+  // Método para obtener los cursos del usuario
+  getUserCourses(user_id:string): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token not found');
+      return of([]); // Retorna un observable con una lista vacía en caso de que no haya token
     }
-    return null;
+
+    const headers = new HttpHeaders().set('x-auth-token',token);
+    return this.http.get(`${this.apiUrl}/${user_id}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error fetching user courses:', error);
+        return of([]); // Retorna un observable con una lista vacía en caso de error
+      })
+    );
   }
 
-  // Obtener los cursos del usuario autenticado
-  getUserCourses(): Observable<any> {
-    if (!this.userId) {
-      throw new Error('User ID not found in token');
-    }
-    return this.http.get<any>(`${this.apiUrl}/${this.userId}`);
-  }
-
-  // Eliminar una inscripción
+  // Método para eliminar un curso del usuario
   deleteUserCourse(courseId: string): Observable<any> {
-    if (!this.userId) {
-      throw new Error('User ID not found in token');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token not found');
+      return of({}); // Retorna un observable con un objeto vacío en caso de que no haya token
     }
-    return this.http.delete(`${this.apiUrl}/${this.userId}/${courseId}`);
+
+    const headers = new HttpHeaders().set('x-auth-token',token);
+    return this.http.delete(`${this.apiUrl}/${courseId}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error deleting user course:', error);
+        return of({}); // Retorna un observable con un objeto vacío en caso de error
+      })
+    );
   }
 }

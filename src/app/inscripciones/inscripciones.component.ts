@@ -46,9 +46,18 @@ throw new Error('Method not implemented.');
     this.enrollments$ = this.enrollmentsService.getEnrollments();
   }
 
-  enrollUser(): void {
-    this.enrollmentsService.createEnrollment(this.selectedUser, this.selectedCourse).subscribe(() => {
-      this.loadEnrollments();
-    });
+  enrollUser() {
+    if (this.selectedUser && this.selectedCourse) {
+      this.enrollmentsService.createEnrollment(this.selectedUser, this.selectedCourse).subscribe(
+        response => {
+          console.log('Enrollment created successfully', response);
+        },
+        error => {
+          console.error('Error creating enrollment', error);
+        }
+      );
+    } else {
+      console.error('User or Course not selected');
+    }
   }
 }

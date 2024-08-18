@@ -7,6 +7,7 @@ import { CursosComponent } from "./cursos/cursos.component";
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { AuthInterceptor } from './auth.Interceptor';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',

@@ -10,6 +10,7 @@ export class CrearCursos {
 
   constructor(private http: HttpClient) {}
 
+  
   getCourseById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
