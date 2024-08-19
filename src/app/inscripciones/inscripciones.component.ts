@@ -2,36 +2,36 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { FooterComponent } from "../footer/footer.component";
-import { EnrollmentsService } from '../services/enrollments.service'; // Asegúrate de crear este servicio
+import { EnrollmentsService } from '../services/enrollments.service'; 
 import { Observable } from 'rxjs';
-import { RouterModule, RouterOutlet } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { UsuariosService } from '../services/usuarios.service';
 import { CursoService } from '../services/curso.service';
+import { Enrollment } from './enrollment.model';
 
 @Component({
   selector: 'app-inscripciones',
   standalone: true,
-  imports: [CommonModule,RouterModule,ReactiveFormsModule, NavbarComponent, FooterComponent,FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, NavbarComponent, FooterComponent],
   templateUrl: './inscripciones.component.html',
   styleUrls: ['./inscripciones.component.css']
 })
 export class InscripcionesComponent implements OnInit {
-deleteEnrollment(arg0: any) {
-throw new Error('Method not implemented.');
-}
   users: any[] = [];
   courses: any[] = [];
   selectedUser!: string;
   selectedCourse!: string;
-  enrollments$!: Observable<any[]>;
+  enrollments$: Observable<Enrollment[]>; // Solo declaración
 
-  constructor(private enrollmentsService: EnrollmentsService, private usuariosService: UsuariosService, private cursoService: CursoService) {}
+  constructor(private enrollmentsService: EnrollmentsService, private usuariosService: UsuariosService, private cursoService: CursoService) {
+    this.enrollments$ = this.enrollmentsService.getEnrollments(); // Inicialización en el constructor
+  }
 
   ngOnInit(): void {
     this.loadUsers();
     this.loadCourses();
-    this.loadEnrollments();
+    this.loadEnrollments(); // Cargar inscripciones en la inicialización
   }
 
   loadUsers(): void {
@@ -43,7 +43,7 @@ throw new Error('Method not implemented.');
   }
 
   loadEnrollments(): void {
-    this.enrollments$ = this.enrollmentsService.getEnrollments();
+    this.enrollments$ = this.enrollmentsService.getEnrollments(); // Actualiza el observable con los datos
   }
 
   enrollUser() {
@@ -59,5 +59,18 @@ throw new Error('Method not implemented.');
     } else {
       console.error('User or Course not selected');
     }
+  }
+  
+
+  deleteEnrollment(id: string) {
+    this.enrollmentsService.deleteEnrollment(id).subscribe(
+        response => {
+            console.log('Enrollment deleted successfully', response);
+            this.loadEnrollments(); // Recargar la lista de inscripciones
+        },
+        error => {
+            console.error('Error deleting enrollment', error);
+        }
+    );
   }
 }

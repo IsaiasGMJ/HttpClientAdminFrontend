@@ -5,10 +5,11 @@
     <div class="col-md-8">
       <div class="card shadow-sm">
         <div class="card-header text-center">
-          <h4>Crear Nuevo Curso</h4>
+          <h4>{{ isEditing ? 'Editar Curso' : 'Crear Nuevo Curso' }}</h4>
         </div>
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="courseForm">
+            <!-- Nombre del Curso -->
             <div class="mb-3">
               <label for="courseName" class="form-label">Nombre del Curso</label>
               <input type="text" class="form-control" id="courseName" formControlName="name" placeholder="Nombre del curso">
@@ -17,6 +18,7 @@
               </div>
             </div>
 
+            <!-- Descripción -->
             <div class="mb-3">
               <label for="courseDescription" class="form-label">Descripción</label>
               <textarea class="form-control" id="courseDescription" formControlName="description" rows="3" placeholder="Descripción del curso"></textarea>
@@ -25,6 +27,7 @@
               </div>
             </div>
 
+            <!-- Precio e ID del Profesor -->
             <div class="row">
               <div class="col-md-6">
                 <div class="mb-3">
@@ -47,14 +50,16 @@
               </div>
             </div>
 
+            <!-- Imagen del Curso -->
             <div class="mb-3">
               <label for="courseImage" class="form-label">Imagen del Curso</label>
-              <input type="file" class="form-control" id="courseImage" (change)="onFileChange($event)">
+              <input type="file" class="form-control" id="image" (change)="onFileChange($event)">
               <div *ngIf="courseForm.controls['image'].invalid && courseForm.controls['image'].touched" class="text-danger">
                 La imagen es requerida.
               </div>
             </div>
 
+            <!-- Estado -->
             <div class="mb-3">
               <label for="courseStatus" class="form-label">Estado</label>
               <select class="form-select" id="courseStatus" formControlName="status">
@@ -63,16 +68,14 @@
               </select>
             </div>
 
-            <div class="d-grid">
-              <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid">Crear Curso</button>
-            </div>
+            <!-- Botón de Crear/Actualizar -->
             <div class="d-grid">
               <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid">
                 {{ isEditing ? 'Actualizar Curso' : 'Crear Curso' }}
               </button>
             </div>
             
-            <!-- Botón para eliminar el curso (visible solo en modo edición) -->
+            <!-- Botón de Eliminar (visible solo en modo edición) -->
             <div class="d-grid mt-3" *ngIf="isEditing">
               <button type="button" class="btn btn-danger" (click)="onDelete()">Eliminar Curso</button>
             </div>

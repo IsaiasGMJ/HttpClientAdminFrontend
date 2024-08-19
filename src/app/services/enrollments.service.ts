@@ -77,4 +77,8 @@ export class EnrollmentsService {
     });
     return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers });
   }
+  enrollUser(userId: string, courseId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/enrollments`, { userId, courseId });
+}
+
 }

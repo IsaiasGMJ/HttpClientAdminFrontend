@@ -12,6 +12,10 @@
       <p class="card-text">{{ curso.description }}</p>
       <a (click)="openModal(curso._id)" class="btn btn-primary">Inscribirse</a>
     </div>
+    <div class="curso-item">
+      <p>{{ curso.nombre }}</p>
+      <button (click)="editarCurso(curso._id)">Editar</button>
+    </div>
   </div>
 </div>
 

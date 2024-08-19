@@ -26,11 +26,12 @@ export class CursosComponent implements  OnInit {
   constructor(private cursoService: CursoService,
      private router: Router,
     private enrollmentService:EnrollmentsService){}
-  ngOnInit(): void {
-    this.cursoService.getCursos().subscribe(data => {
-      this.cursos = data;
-    });
-  }
+    ngOnInit(): void {
+      this.cursoService.getCursos().subscribe(data => {
+        // console.log('Datos recibidos en el componente:', data); // Añadir log para depuración
+       this.cursos = data;
+      });
+    }
   ngAfterViewInit() {
    initMDB({ Carousel, Ripple });
    this.modal = new Modal(document.getElementById('confirmSubscriptionModal'));  // Inicializa el modal manualmente
@@ -68,5 +69,8 @@ export class CursosComponent implements  OnInit {
         console.error('Error creating enrollment', error);
       }
     );
+  }
+  editarCurso(cursoId: string) {
+    this.router.navigate(['/editar-curso', cursoId]);
   }
 }

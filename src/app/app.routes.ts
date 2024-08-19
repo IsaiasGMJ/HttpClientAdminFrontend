@@ -14,6 +14,7 @@ export const routes: Routes = [
   { path: 'crearcursos', component: CrearCursosComponent, canActivate:[AuthGuard]},
   { path: 'inscripciones', component: InscripcionesComponent,canActivate:[AuthGuard]},
   { path: 'miscursos', component: CursosUsuariosComponent, canActivate:[AuthGuard]},
-  { path: '', redirectTo: '/login', pathMatch: 'full' } //login
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, //login
+  { path: 'editar-curso/:id', component: CrearCursosComponent }
 ];
 

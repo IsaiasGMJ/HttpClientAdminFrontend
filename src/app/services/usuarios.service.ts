@@ -10,35 +10,36 @@ export class UsuariosService {
 
   constructor(private http: HttpClient) { }
 
-  // Obtener todos los usuarios
   getUsers(): Observable<any[]> {
-    const headers = new HttpHeaders({
-      'x-auth-token': `${localStorage.getItem('token')}`
-    });
-    return this.http.get<any[]>(this.apiUrl, {headers});
+    const token = localStorage.getItem('token') ?? '';
+    const headers = new HttpHeaders({ 'x-auth-token': token });
+    return this.http.get<any[]>(this.apiUrl, { headers });
   }
 
-  // Crear un nuevo usuario
-  createUser(user: any): Observable<any> {
-    const headers = new HttpHeaders({
-      'x-auth-token': `${localStorage.getItem('token')}`
-    });
-    return this.http.post<any>(this.apiUrl, user, { headers });
+  // Crear usuario
+  createUser(userData: any): Observable<any> {
+    const token = localStorage.getItem('token') ?? '';
+    const headers = new HttpHeaders({ 'x-auth-token': token });
+    return this.http.post(this.apiUrl, userData, { headers });
   }
 
-  // Actualizar un usuario existente
-  updateUser(id: string, user: any): Observable<any> {
-    const headers = new HttpHeaders({
-      'x-auth-token': `${localStorage.getItem('token')}`
-    });
-    return this.http.put<any>(`${this.apiUrl}/${id}`, user, { headers });
+  // Actualizar usuario
+  updateUser(userId: string, userData: any): Observable<any> {
+    const token = localStorage.getItem('token') ?? '';
+    const headers = new HttpHeaders({ 'x-auth-token': token });
+
+    // Excluir el campo de contraseña si no se proporciona
+    if (!userData.password) {
+      delete userData.password;
+    }
+
+    return this.http.put(`${this.apiUrl}/${userId}`, userData, { headers });
   }
 
-  // Eliminar un usuario
-  deleteUser(id: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'x-auth-token': `${localStorage.getItem('token')}`
-    });
-    return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers });
+  // Eliminar usuario
+  deleteUser(userId: string): Observable<any> {
+    const token = localStorage.getItem('token') ?? '';
+    const headers = new HttpHeaders({ 'x-auth-token': token });
+    return this.http.delete(`${this.apiUrl}/${userId}`, { headers });
   }
 }

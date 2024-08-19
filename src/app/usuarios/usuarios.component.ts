@@ -26,7 +26,8 @@ export class UsuariosComponent implements OnInit {
     this.userForm = this.fb.group({
       username: [''],
       email: [''],
-      role: ['']
+      password:[''],
+      role: ['']  
     });
   }
 
@@ -71,18 +72,16 @@ export class UsuariosComponent implements OnInit {
       email: user.email,
       role: user.role,
     });
-
+  
     // Deshabilitar el campo de la contraseña solo durante la edición
     this.userForm.controls['password'].disable();
   }
-
   // Eliminar usuario
   deleteUser(id: string) {
     this.usuariosService.deleteUser(id).subscribe(() => {
       this.getUsers().subscribe(data => this.users = data);
     });
   }
-
   // Resetear el formulario
   resetForm() {
     this.userForm.reset();
