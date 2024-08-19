@@ -7,7 +7,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>ID usuario</th>
+                        <th>ID</th>
                         <th>Nombre Usuario</th>
                         <th>Curso</th>
                         <th>Acciones</th>
@@ -15,9 +15,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let enrollment of enrollments">
-                        <td>{{ enrollment.userId }}</td>
-                        <td>{{ enrollment.userName }}</td>
-                        <td>{{ enrollment.courseName }}</td>
+                        <td>{{ enrollment._id }}</td>
+                        <td>{{ enrollment.user_id.username }}</td>
+                        <td>{{ enrollment.course_id.name}}</td>
                         <td>
                             <button class="btn btn-danger btn-sm" (click)="deleteEnrollment(enrollment._id)">Eliminar</button>
                         </td>
@@ -29,6 +29,7 @@
             <p>No hay inscripciones disponibles.</p>
         </ng-template>
 
+
 <div class="container mt-5">
     <h2>Inscribir Usuario a Curso</h2>
     <form (submit)="enrollUser()">
@@ -36,7 +37,7 @@
             <label for="userId" class="form-label">Usuario</label>
             <select class="form-select" id="userId" [(ngModel)]="selectedUser" name="userId" required>
                 <option selected disabled value="">Selecciona un usuario</option>
-                <option *ngFor="let user of users" [value]="user._id">{{ user.name }}</option>
+                <option *ngFor="let user of users" [value]="user._id">{{ user.username }}</option>
             </select>
         </div>
         <div class="mb-3">

@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { FooterComponent } from "../footer/footer.component";
 import { EnrollmentsService } from '../services/enrollments.service'; 
 import { Observable } from 'rxjs';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { RouterLink, RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuariosService } from '../services/usuarios.service';
 import { CursoService } from '../services/curso.service';
 import { Enrollment } from './enrollment.model';
@@ -13,20 +13,27 @@ import { Enrollment } from './enrollment.model';
 @Component({
   selector: 'app-inscripciones',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule,ReactiveFormsModule,
+     RouterModule, FormsModule, 
+     NavbarComponent, FooterComponent,NgClass,
+     RouterLink],
   templateUrl: './inscripciones.component.html',
   styleUrls: ['./inscripciones.component.css']
 })
 export class InscripcionesComponent implements OnInit {
+  inscripcionForm: FormGroup;
   users: any[] = [];
   courses: any[] = [];
-  selectedUser!: string;
-  selectedCourse!: string;
-  enrollments$: Observable<Enrollment[]>; // Solo declaración
+  selectedUser: string | undefined;
+  selectedCourse: string | undefined;
+  enrollments$: Observable<Enrollment[]> | undefined; // Solo declaración
 
-  constructor(private enrollmentsService: EnrollmentsService, private usuariosService: UsuariosService, private cursoService: CursoService) {
-    this.enrollments$ = this.enrollmentsService.getEnrollments(); // Inicialización en el constructor
-  }
+constructor(private fb: FormBuilder , private enrollmentsService: EnrollmentsService, private usuariosService: UsuariosService, private cursoService: CursoService) {
+      this.inscripcionForm = this.fb.group({// Inicialización en el constructor
+        user_id: ['', Validators.required],
+        course_id:['', Validators.required]
+      });
+    }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -46,20 +53,66 @@ export class InscripcionesComponent implements OnInit {
     this.enrollments$ = this.enrollmentsService.getEnrollments(); // Actualiza el observable con los datos
   }
 
-  enrollUser() {
-    if (this.selectedUser && this.selectedCourse) {
-      this.enrollmentsService.createEnrollment(this.selectedUser, this.selectedCourse).subscribe(
-        response => {
-          console.log('Enrollment created successfully', response);
-        },
-        error => {
-          console.error('Error creating enrollment', error);
-        }
-      );
-    } else {
-      console.error('User or Course not selected');
+  // enrollUser() {
+  //   console.log('hola puto si activaste esto:v');
+  //       if (this.selectedUser && this.selectedCourse) {
+  //     this.enrollmentsService.createEnrollment(this.selectedUser, this.selectedCourse).subscribe(
+  //       response => {
+  //         console.log('Enrollment created successfully', response);
+  //       },
+  //       error => {
+  //         console.error('Error creating enrollment', error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error('User or Course not selected');
+  //   }
+  // }
+
+  onSubmit() {
+    if(this.inscripcionForm.valid){
+      this.enrollmentsService.createEnrollment(
+        this.inscripcionForm.value.user_id, 
+        this.inscripcionForm.value.course_id).subscribe(
+          response => {
+            console.log('Enrollment created successfully', response);
+            this.loadEnrollments();
+            },
+        );
+      }
     }
+
+enrollUser() {
+  console.log('Selected User:', this.selectedUser);
+  console.log('Selected Course:', this.selectedCourse);
+  if (this.selectedUser && this.selectedCourse) {
+    this.enrollmentsService.createEnrollment(this.selectedUser, this.selectedCourse).subscribe(
+      response => {
+        console.log('Enrollment created successfully', response);
+        this.loadEnrollments();
+      },
+      error => {
+        console.error('Error creating enrollment', error);
+      }
+    );
+  } else {
+    console.error('User or Course not selected');
   }
+}
+
+  //       if (this.selectedUser && this.selectedCourse) {
+  //     this.enrollmentsService.createEnrollment(this.selectedUser, this.selectedCourse).subscribe(
+  //       response => {
+  //         console.log('Enrollment created successfully', response);
+  //       },
+  //       error => {
+  //         console.error('Error creating enrollment', error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error('User or Course not selected');
+  //   }
+  // }
   
 
   deleteEnrollment(id: string) {

@@ -1,11 +1,6 @@
 // src/app/inscripciones/enrollment.model.ts
 export interface Enrollment {
-course_id: any;
-user_id: any;
-    _id: string;
-    userId: string;
-    userName: string;
-    courseName: string;
-    // Añade más campos si es necesario
-  }
-  
+  _id: string;
+  user_id: { _id: string, username:string}; // Solo incluye el _id del usuario, ya que no hay un nombre de usuario en los datos actuales
+  course_id: { _id: string, name: string };
+}

@@ -53,22 +53,20 @@ export class EnrollmentsService {
 
 
   // Crear una nueva inscripción
-  createEnrollment(userId: string, courseId: string): Observable<any> {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('No token found');
-  }
+  // createEnrollment(userId: string, courseId: string): Observable<any> {
+  // const token = localStorage.getItem('token');
+  // if (!token) {
+  //   throw new Error('No token found');
+  // }
 
-  const headers = new HttpHeaders({
-    'x-auth-token': `${token}`
-  });
+  // const headers = new HttpHeaders({
+  //   'x-auth-token': `${token}`
+  // });
 
   // Ya que userId se recibe como argumento, no es necesario volver a declararlo
-  return this.http.post(this.apiUrl, { user_id: userId, course_id: courseId }, { headers });
-}
+//   return this.http.post(this.apiUrl, { user_id: userId, course_id: courseId }, { headers });
+// }
 
-
-  
 
   // Eliminar una inscripción existente
   deleteEnrollment(id: string): Observable<any> {
@@ -77,8 +75,13 @@ export class EnrollmentsService {
     });
     return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers });
   }
-  enrollUser(userId: string, courseId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/enrollments`, { userId, courseId });
-}
+
+  createEnrollment(user_id: string, course_id: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'x-auth-token': `${localStorage.getItem('token')}`
+    });
+    const enrollment = { user_id, course_id };
+    return this.http.post(this.apiUrl, enrollment,{headers});
+  }
 
 }
