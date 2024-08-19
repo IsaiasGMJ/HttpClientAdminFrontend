@@ -1,7 +1,6 @@
 <app-navbar></app-navbar>
 
 <!-- Listado de Cursos -->
-<!-- Listado de Cursos -->
 <div class="grid-container">
   <div *ngFor="let curso of cursos" class="card">
     <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
@@ -33,7 +32,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
-        <!-- Mueve el botón fuera del *ngFor -->
         <button type="button" class="btn btn-primary" (click)="confirmEnrollment()" data-mdb-dismiss="modal">
           Confirmar y continuar
         </button>

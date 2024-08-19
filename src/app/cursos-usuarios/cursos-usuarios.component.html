@@ -1,5 +1,4 @@
 <app-navbar></app-navbar>
-<!-- src/app/cursos-usuarios/cursos-usuarios.component.html -->
 <div class="container">
   <h2>Mis Cursos</h2>
   <table class="table table-striped">
@@ -11,15 +10,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let course of userCourses">
-        <td>{{ course.course_id?.name || 'Curso no disponible' }}</td>
-        <td>{{ course.course_id?.description || 'Descripción no disponible' }}</td>
+      <tr *ngFor="let curso of Cursos">
+        <td>{{ curso.course_id?.name || 'Curso no disponible' }}</td>
+        <td>{{ curso.course_id?.description || 'Descripción no disponible' }}</td>
         <td>
-          <button class="btn btn-danger" (click)="deleteCourse(course._id)">Eliminar inscripción</button>
+          <button class="btn btn-danger" (click)="deleteCourse(curso.course_id._id)">Eliminar inscripción</button>
         </td>
-      </tr>      
+      </tr>   
     </tbody>
   </table>
 </div>
-
 <app-footer></app-footer>
